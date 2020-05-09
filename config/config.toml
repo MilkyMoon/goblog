@@ -1,0 +1,8 @@
+[app]
+  #app 名称
+  name = "you_project_name"
+  #app url
+  url  = "http://localhost"
+  addr = ":8181"
+  #单元测试调试信息
+  debug = false
