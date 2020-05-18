@@ -1,0 +1,25 @@
+{% define "navbar" %}
+
+<div class="blog-header">
+    <b-container>
+        <b-row class="blog-header-title">
+            <b-col md="12">
+                <h1>{% .title %}</h1>
+                <span>{% .slogan %}</span>
+            </b-col>
+
+        </b-row>
+
+        <b-navbar toggleable="lg" type="dark" class="blog-header-navbar">
+            <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+            <b-collapse id="nav-collapse" is-nav>
+                <b-navbar-nav>
+                    <b-nav-item v-for="item in menu" :key="" :href="item.path">{{item.title}}</b-nav-item>
+                </b-navbar-nav>
+            </b-collapse>
+        </b-navbar>
+    </b-container>
+</div>
+
+{% end %}

@@ -1,0 +1,44 @@
+.blog-view{
+    background-color: #fff;
+    padding: 36px 48px;
+}
+
+.view-marked{
+    margin-top: 36px;
+}
+
+.view-marked-nav{
+    position: relative;
+}
+
+.view-marked-catalog{
+    position: fixed;
+    top: 340px;
+    padding: 15px;
+    border-left: 1px solid #eee;
+}
+
+.view-marked-catalog h4{
+    margin: 0;
+}
+
+.blog-view-tag{
+
+}
+
+.blog-view-tag ul{
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.blog-view-tag ul li{
+    list-style: none;
+    margin-right: 10px;
+}
+
+@media screen and (max-width:768px){
+    .view-marked-nav{
+        display: none;
+    }
+}

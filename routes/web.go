@@ -2,6 +2,7 @@ package routes
 
 import (
 	"codwiki.cn/goblog/internal/controller"
+	"codwiki.cn/goblog/internal/middleware"
 	"github.com/iris-contrib/middleware/cors"
 	"github.com/kataras/iris"
 )
@@ -16,9 +17,23 @@ func Register(api *iris.Application)  {
 		AllowCredentials: true,
 	})
 
-	app := api.Party("/", crs).AllowMethods(iris.MethodOptions)
+	HTML := iris.HTML("./web/views", ".html")
+	//修改默认的{{}}标记符为{%%}，因为前端使用Vue，与Vue冲突
+	HTML.Delims("{%","%}")
+	HTML.Layout("layout.html")
+	api.RegisterView(HTML)
 
+	app := api.Party("/", crs,middleware.SiteInfo).AllowMethods(iris.MethodOptions)
 	// 首页模块
-	app.Get("/", controller.Index)
 
+	app.Get("/", controller.List)
+
+	docs := app.Party("/",middleware.NavList,middleware.CategoryList,middleware.SliderInfo)
+	docs.Get("/",controller.List)
+	docs = docs.Party("/docs")
+	docs.Get("/{path}",controller.List)
+	docs.Get("/{path}/{name}",controller.Post)
+
+	//book := app.Party("/book")
+	//book.Get("/")
 }

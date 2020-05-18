@@ -1,0 +1,13 @@
+{% define "footer" %}
+<div class="blog-footer">
+    <p>{% .title %}！Contact me at:
+        <a :href="slider.github">
+            <i class="fa fa-github blog-footer-icon"></i>
+        </a>
+        <a :href="'mailto:' + slider.email">
+            <i class="fa fa-envelope blog-footer-icon"></i>
+        </a>
+    </p>
+    <p>Site powered by {{slider.author}} | {% .icp %}</p>
+</div>
+{% end %}

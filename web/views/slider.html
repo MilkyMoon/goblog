@@ -1,0 +1,27 @@
+{% define "slider" %}
+
+<div class="blog-slider">
+    <div class="blog-slider-block">
+        <div class="blog-info">
+            <img :src="slider.avatar"/>
+            <h5>{{ slider.author }}</h5>
+        </div>
+        <p>{{slider.description}}</p>
+    </div>
+
+    <div class="blog-slider-block">
+        <h6>Categories</h6>
+        <ul>
+            <li v-for="item in cate" :key=""><a :href="'/docs/'+item.path">{{item.name}}({{item.number}})</a></li>
+        </ul>
+    </div>
+
+    <div class="blog-slider-block">
+        <h6>Links</h6>
+        <ul>
+            <li v-for="item in slider.out_link" :key=""><a :href="item.url">{{item.title}}</a></li>
+        </ul>
+    </div>
+</div>
+
+{% end %}

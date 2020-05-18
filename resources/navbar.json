@@ -1,0 +1,19 @@
+[
+  {
+    "title": "首页",
+    "path": "/",
+    "description": "博客首页"
+  },
+  {
+    "title": "其他",
+    "path": "/docs/其他",
+    "folder": "其他",
+    "description": ""
+  },
+  {
+    "title": "GitHub",
+    "path": "https://github.com/MilkyMoon",
+    "description": "",
+    "out_link": true
+  }
+]

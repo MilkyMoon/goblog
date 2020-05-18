@@ -11,6 +11,8 @@ func main()  {
 
 	routes.Register(app)
 
+	app.HandleDir("/static","web/static")
+
 	addr := config.Conf.Get("app.addr").(string)
 	_ = app.Run(iris.Addr(addr),iris.WithoutServerError())
 }

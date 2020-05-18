@@ -1,0 +1,64 @@
+{% block "navbar" . %}{% end %}
+
+<b-container class="content-container">
+<b-row>
+    <b-col md="9">
+        <div class="blog-view">
+            <div class="blog-view-header">
+                <h2>{{data.title}}</h2>
+                <div class="blog-view-tag">
+                    <ul>
+                        <li><i class="fa fa-calendar" class="icon"></i></li>
+                        <li>
+                            <span>发表于{{data.create_time}} | 更新于{{data.update_time}}</span>
+                        </li>
+                        <li><i class="fa fa-folder-open" class="icon"></i></li>
+                        <li>{{data.category}}</li>
+                    </ul>
+
+                    <!--
+                    <div class="blog-edit">
+                        <a href="">
+                            <i class="fa fa-github"></i>
+                            <span>修改原文</span>
+                        </a>
+                    </div>
+                    -->
+                </div>
+            </div>
+            <div v-html="marked(data.body)" class="view-marked"></div>
+        </div>
+    </b-col>
+    <b-col md="3">
+        {% block "slider" . %}{% end %}
+    </b-col>
+</b-row>
+</b-container>
+
+{% block "footer" . %}{% end %}
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: "#vue",
+        data:{
+            data:[],
+            menu:[],
+            cate:[],
+            slider:{}
+        },
+        created(){
+            //接收值 |raw 不转义输出
+            this.data = JSON.parse('{%.data%}')
+            this.menu = JSON.parse('{%.menu%}')
+            this.cate = JSON.parse('{%.cate%}')
+            this.slider = JSON.parse('{%.slider%}')
+
+            hljs.initHighlightingOnLoad()
+        },
+        methods:{
+            marked(md){
+                return marked(md);
+            }
+        }
+    });
+</script>
