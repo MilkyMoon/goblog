@@ -45,3 +45,18 @@ func GetCategoryList() Categories {
 
 	return list
 }
+
+// Len 实现 Sort 的接口
+func (cate Categories) Len() int {
+	return len(cate)
+}
+
+// Swap 实现的 Sort 接口
+func (cate Categories) Swap(i, j int) {
+	cate[i], cate[j] = cate[j], cate[i]
+}
+
+// Less 实现的 Sort 接口， 按照标签数量排序
+func (cate Categories) Less(i, j int) bool {
+	return cate[i].Number > cate[j].Number
+}

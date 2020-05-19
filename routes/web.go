@@ -29,8 +29,7 @@ func Register(api *iris.Application)  {
 
 	app := api.Party("/", crs,middleware.SiteInfo).AllowMethods(iris.MethodOptions)
 	// 首页模块
-
-	app.Get("/", controller.List)
+	app.Get("/",controller.List)
 
 	docs := app.Party("/",middleware.NavList,middleware.CategoryList,middleware.SliderInfo)
 	docs.Get("/",controller.List)

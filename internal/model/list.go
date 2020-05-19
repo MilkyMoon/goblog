@@ -1,5 +1,9 @@
 package model
 
+import (
+	"sort"
+)
+
 var CateModel = newListCate()
 
 type List interface {
@@ -33,14 +37,25 @@ func newListCate() List {
 }
 
 func (list *ListCate) ArticleContent(path string) Article {
-	return GetArticleContent(path)
+	content,err := GetArticleContent(path)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return content
 }
 
 func (list *ListCate) ArticleList(name string) Articles {
-	return GetArticleList(name)
+	var articles Articles
+	articles = GetArticleList(name)
+
+	sort.Sort(&articles)
+	return articles
 }
 
 func (list *ListCate) CategoryList() Categories {
+	sort.Sort(&list.Categories)
 	return list.Categories
 }
 

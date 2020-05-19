@@ -3,6 +3,7 @@ package model
 import (
 	"bufio"
 	"codwiki.cn/goblog/internal/common"
+	"errors"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -19,9 +20,9 @@ type Article struct {
 	// 文章标签
 	Category string `json:"category"`
 	//创建时间
-	CreateTime string `json:"create_time"`
+	CreateTime time.Time `json:"create_time"`
 	//更新时间
-	UpdateTime string `json:"update_time"`
+	UpdateTime time.Time `json:"update_time"`
 	//文章描述
 	Description string `json:"description"`
 	//文章内容
@@ -40,7 +41,11 @@ func GetArticleList(name string) []Article {
 		//判断是否是markdown文档
 		if filepath.Ext(path) == ".md" {
 			//获取文档信息
-			article := GetArticleContent(path)
+			article,err := GetArticleContent(path)
+
+			if err != nil {
+				return nil
+			}
 
 			//获取文件后缀
 			//suffix := filepath.Ext(path)
@@ -58,17 +63,13 @@ func GetArticleList(name string) []Article {
 		panic(err)
 	}
 
-	if len(list) == 0{
-		panic("暂无数据")
-	}
-
 	return list
 }
 
 /**
 获取文章详情
  */
-func GetArticleContent(path string) Article {
+func GetArticleContent(path string) (Article,error) {
 	article := Article{}
 
 	//以只读方式打开文档
@@ -131,7 +132,7 @@ func GetArticleContent(path string) Article {
 
 		//判断文章内容的结构
 		if len(body) != 3 && len(body) != 1 {
-			return Article{}
+			return Article{},errors.New("文章内容结构不正确")
 		}
 
 		//截取文章描述
@@ -145,14 +146,14 @@ func GetArticleContent(path string) Article {
 		//获取文件最后更新时间
 		fi,err := fileObj.Stat()
 		if err != nil {
-			article.UpdateTime = time.Now().Format("2006-01-02")
+			article.UpdateTime = time.Now()
 		} else {
-			article.UpdateTime = fi.ModTime().Format("2006-01-02")
+			article.UpdateTime = fi.ModTime()
 		}
 
 		//获取创建时间
 
-		//linux下获取创建时间
+		//linux下获取创建时间（此方法无法获取到创建时间，后续更新shell脚本解决方案）
 		//stat_t := fi.Sys().(*syscall.Stat_t)
 		//ctim := stat_t.Ctim
 
@@ -164,7 +165,7 @@ func GetArticleContent(path string) Article {
 		stat_t := fi.Sys().(*syscall.Stat_t)
 		ctim := stat_t.Birthtimespec
 
-		article.CreateTime = time.Unix(int64(ctim.Sec), int64(ctim.Nsec)).Format("2006-01-02")
+		article.CreateTime = time.Unix(int64(ctim.Sec), int64(ctim.Nsec))
 
 		//获取Tag标签（父文件夹）
 		dirs := strings.Split(path,"/")
@@ -197,8 +198,29 @@ func GetArticleContent(path string) Article {
 
 		//article.Path = path_str
 	} else {
-		panic("未找到文件")
+		return article,err
 	}
 
-	return article
+	return article,nil
+}
+
+//实现了sort接口
+func (a Articles) Len() int {
+	return len(a)
+}
+
+func (a Articles) Swap(i, j int) {
+	a[i], a[j] = a[j], a[i]
+}
+
+func (a Articles) Less(i, j int) bool {
+	if a[i].UpdateTime.After(a[j].UpdateTime) {
+		return true
+	}
+
+	if a[i].CreateTime.After(a[j].CreateTime) {
+		return true
+	}
+
+	return false
 }

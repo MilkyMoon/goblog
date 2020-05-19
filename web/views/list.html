@@ -4,7 +4,7 @@
     <b-row>
         <b-col md="9">
             <div class="article-list">
-                <ul>
+                <ul v-if="data.length > 0">
                     <li v-for="item in data" :key="item.id">
                         <a :href="'/docs'+item.path" v-if="item.type == 1"><h2>{{item.title}}</h2></a>
                         <a :href="'/docs'+ item.path" v-else>
@@ -13,7 +13,7 @@
                         <div class="blog-view-tag">
                             <ul>
                                 <li><i class="fa fa-calendar" class="icon"></i></li>
-                                <li><span>发表于{{item.create_time}}</span></li>
+                                <li><span>发表于{{item.create_time | formatTimer}}</span></li>
                                 <li><i class="fa fa-folder-open" class="icon"></i></li>
                                 <li class="tag"><a>{{item.category}}</a></li>
                             </ul>
@@ -28,6 +28,9 @@
                             </a>
                         </div>
                     </li>
+                </ul>
+                <ul v-else>
+                    <li>空空如也~</li>
                 </ul>
 
                 <div class="page-list" v-show="page_show">
@@ -81,6 +84,23 @@
         methods:{
             marked(desc){
                 return marked(desc)
+            }
+        },
+        filters: {
+            formatTimer: function(value) {
+                let date = new Date(value);
+                let y = date.getFullYear();
+                let MM = date.getMonth() + 1;
+                MM = MM < 10 ? "0" + MM : MM;
+                let d = date.getDate();
+                d = d < 10 ? "0" + d : d;
+                let h = date.getHours();
+                h = h < 10 ? "0" + h : h;
+                let m = date.getMinutes();
+                m = m < 10 ? "0" + m : m;
+                let s = date.getSeconds();
+                s = s < 10 ? "0" + s : s;
+                return y + "-" + MM + "-" + d;
             }
         }
     });
