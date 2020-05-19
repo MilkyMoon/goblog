@@ -23,6 +23,10 @@ func Register(api *iris.Application)  {
 	HTML.Layout("layout.html")
 	api.RegisterView(HTML)
 
+	//注册全局中间件，捕获异常
+	api.Use(middleware.Recover)
+	api.OnAnyErrorCode(notFound)
+
 	app := api.Party("/", crs,middleware.SiteInfo).AllowMethods(iris.MethodOptions)
 	// 首页模块
 
@@ -34,6 +38,13 @@ func Register(api *iris.Application)  {
 	docs.Get("/{path}",controller.List)
 	docs.Get("/{path}/{name}",controller.Post)
 
+	//跳转错误页面
+	app.Get("/errors",notFound)
+
 	//book := app.Party("/book")
 	//book.Get("/")
+}
+
+func notFound(ctx iris.Context)  {
+	ctx.View("404.html")
 }

@@ -43,9 +43,9 @@ func GetArticleList(name string) []Article {
 			article := GetArticleContent(path)
 
 			//获取文件后缀
-			suffix := filepath.Ext(path)
+			//suffix := filepath.Ext(path)
 			//获取文件名
-			article.Title = strings.TrimSuffix(filepath.Base(path),suffix)
+			//article.Title = strings.TrimSuffix(filepath.Base(path),suffix)
 			article.Body = ""
 
 			list = append(list,article)
@@ -56,6 +56,10 @@ func GetArticleList(name string) []Article {
 
 	if err != nil{
 		panic(err)
+	}
+
+	if len(list) == 0{
+		panic("暂无数据")
 	}
 
 	return list
@@ -147,8 +151,19 @@ func GetArticleContent(path string) Article {
 		}
 
 		//获取创建时间
+
+		//linux下获取创建时间
+		//stat_t := fi.Sys().(*syscall.Stat_t)
+		//ctim := stat_t.Ctim
+
+		//windows下获取创建时间
+		//wFileSys := fi.Sys().(*syscall.Win32FileAttributeData)
+		//ctim := wFileSys.CreationTime.Nanoseconds()/1e9
+
+		//mac下获取文件创建时间
 		stat_t := fi.Sys().(*syscall.Stat_t)
 		ctim := stat_t.Birthtimespec
+
 		article.CreateTime = time.Unix(int64(ctim.Sec), int64(ctim.Nsec)).Format("2006-01-02")
 
 		//获取Tag标签（父文件夹）
@@ -181,6 +196,8 @@ func GetArticleContent(path string) Article {
 		//}
 
 		//article.Path = path_str
+	} else {
+		panic("未找到文件")
 	}
 
 	return article
