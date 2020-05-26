@@ -40,6 +40,10 @@ func Register(api *iris.Application)  {
 	//跳转错误页面
 	app.Get("/errors",notFound)
 
+	app.Post("/webhooks",controller.Webhook)
+
+	app.Get("/reload",controller.Reload)
+
 	//book := app.Party("/book")
 	//book.Get("/")
 }

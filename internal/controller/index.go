@@ -3,10 +3,17 @@ package controller
 import (
 	"codwiki.cn/goblog/internal/common"
 	"codwiki.cn/goblog/internal/model"
+	"codwiki.cn/goblog/config"
+	"crypto/hmac"
+	"crypto/sha1"
+	"encoding/hex"
 	"encoding/json"
 	"github.com/kataras/iris"
+	"io/ioutil"
 	"net/url"
+	"os/exec"
 	"path/filepath"
+	"strings"
 )
 
 func List(ctx iris.Context)  {
@@ -30,4 +37,70 @@ func Post(ctx iris.Context)  {
 	ctx.ViewData("data",string(data))
 
 	ctx.View("marked_view.html")
+}
+
+func Webhook(ctx iris.Context){
+	singn := ctx.GetHeader("X-Hub-Signature")
+	body, err := ioutil.ReadAll(ctx.Request().Body)
+
+	if err != nil {
+		return
+	}
+	check := checkSecret(singn, body)
+	if !check {
+		return
+	}
+
+	gitpull()
+
+	//刷新内存中的数据
+	model.CateModel.Reload()
+
+	ctx.StatusCode(200)
+}
+
+func gitpull() {
+	path := common.GetRootPath()
+	// 执行 git pull
+	cmd := exec.Command("git", "pull")
+	// 切换到命令要执行的目录
+	cmd.Dir = path
+
+	// 执行，并返回结果
+	_, err := cmd.Output()
+
+	if err != nil {
+		panic(err)
+	}
+}
+
+//参考mdblog
+func checkSecret(singn string, body []byte) bool {
+	if len(singn) != 45 || !strings.HasPrefix(singn, "sha1=") {
+		return false
+	}
+
+	// 获取github配置的加密串
+	secret := []byte(config.Conf.Get("app.secret").(string))
+
+	// 计算签名
+	mac := hmac.New(sha1.New, secret)
+	mac.Write(body)
+	key := mac.Sum(nil)
+
+	// Hex 解码
+	singnature := make([]byte, 20)
+	hex.Decode(singnature, []byte(singn[5:]))
+
+	// 比较签名是否一直
+	if hmac.Equal(singnature, key) {
+		return true
+	}
+
+	return false
+}
+
+func Reload(ctx iris.Context)  {
+	model.CateModel.Reload()
+	ctx.StatusCode(200)
 }

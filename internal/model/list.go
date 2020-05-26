@@ -12,6 +12,7 @@ type List interface {
 	ArticleList(string) Articles
 	NavList() Navbars
 	GetSliderInfo() Slider
+	Reload()
 }
 
 type ListCate struct {
@@ -65,6 +66,10 @@ func (list *ListCate) NavList() Navbars {
 
 func (list *ListCate) GetSliderInfo() Slider {
 	return list.Slider
+}
+
+func (list *ListCate) Reload() {
+	CateModel = newListCate()
 }
 
 func (l ListBook) ArticleContent(string) Article {

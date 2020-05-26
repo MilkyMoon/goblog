@@ -9,6 +9,8 @@
   debug = false
   #网站备案号
   icp = "京ICP备15054073号"
+  #github Webhooks中配置的 Secret
+  secret = "goblog"
 #资源文件配置
 [res]
     root_dir = "resources"
