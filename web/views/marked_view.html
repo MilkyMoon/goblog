@@ -8,12 +8,11 @@
                 <h2>{{data.title}}</h2>
                 <div class="blog-view-tag">
                     <ul>
-                        <li><i class="fa fa-calendar" class="icon"></i></li>
                         <li>
+                            <i class="fa fa-calendar" class="icon"></i>
                             <span>发表于{{data.create_time | formatTimer}} | 更新于{{data.update_time | formatTimer}}</span>
                         </li>
-                        <li><i class="fa fa-folder-open" class="icon"></i></li>
-                        <li>{{data.category}}</li>
+                        <li class="tag"><i class="fa fa-folder-open" class="icon"></i><a>{{data.category}}</a></li>
                     </ul>
 
                     <!--

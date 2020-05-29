@@ -1,6 +1,7 @@
 .blog-view{
     background-color: #fff;
     padding: 36px 48px;
+    margin-bottom: 1.5rem;
 }
 
 .view-marked{
@@ -40,5 +41,9 @@
 @media screen and (max-width:768px){
     .view-marked-nav{
         display: none;
+    }
+
+    .blog-view{
+        padding: 30px 20px;
     }
 }

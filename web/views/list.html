@@ -12,10 +12,8 @@
                         </a>
                         <div class="blog-view-tag">
                             <ul>
-                                <li><i class="fa fa-calendar" class="icon"></i></li>
-                                <li><span>发表于{{item.create_time | formatTimer}}</span></li>
-                                <li><i class="fa fa-folder-open" class="icon"></i></li>
-                                <li class="tag"><a>{{item.category}}</a></li>
+                                <li><i class="fa fa-calendar" class="icon"></i><span>发表于{{item.create_time | formatTimer}}</span></li>
+                                <li class="tag"><i class="fa fa-folder-open" class="icon"></i><a>{{item.category}}</a></li>
                             </ul>
                         </div>
                         <div v-html="marked(item.description)" class="view-marked"></div>
