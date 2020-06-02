@@ -34,9 +34,15 @@
                 <div class="page-list" v-show="page_show">
                     <b-pagination
                             v-model="page"
+                            pills
                             :total-rows="records"
                             :per-page="perPage"
                             align="center"
+                            @change="skip"
+                            prev-text="Previous"
+                            next-text="Next"
+                            first-number
+                            last-number
                     ></b-pagination>
                 </div>
 
@@ -76,12 +82,20 @@
             this.menu = JSON.parse('{%.menu%}')
             this.cate = JSON.parse('{%.cate%}')
             this.slider = JSON.parse('{%.slider%}')
+            this.page = parseInt('{%.page%}')
+            this.records = parseInt('{%.records%}')
+            this.perPage = parseInt('{%.perPage%}')
+
+            if(this.records / this.perPage > 1) { this.page_show = true }
 
             hljs.initHighlightingOnLoad()
         },
         methods:{
             marked(desc){
                 return marked(desc)
+            },
+            skip(page){
+                window.location.href = location.protocol + '//' + location.host + location.pathname + '?page=' + page
             }
         },
         filters: {
@@ -100,6 +114,11 @@
                 s = s < 10 ? "0" + s : s;
                 return y + "-" + MM + "-" + d;
             }
-        }
+        },
+        // watch:{
+        //     page:function(newl){
+        //         window.location.href = location.protocol + '//' + location.host + location.pathname + '?page=' + this.page
+        //     }
+        // }
     });
 </script>

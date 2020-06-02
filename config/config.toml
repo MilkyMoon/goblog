@@ -1,9 +1,9 @@
 [app]
   #app 名称
-  name = "PengZong的个人博客"
+  name = "彭棕的个人博客"
   slogan = "没有什么比做无用功更让人痛苦的事情了！"
   #app url
-  url  = "http://localhost"
+  url  = "https://codwiki.cn"
   addr = ":8181"
   #单元测试调试信息
   debug = false
@@ -11,6 +11,8 @@
   icp = "京ICP备15054073号"
   #github Webhooks中配置的 Secret
   secret = "goblog"
+  #每页最多显示文章数
+  limit = 10
 #资源文件配置
 [res]
     root_dir = "resources"

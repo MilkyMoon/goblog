@@ -20,9 +20,11 @@
 
 #### 更新日志
 1. 完成网站基本内容  2020-05-18
+2. 实现webhooks自动更新  2020-05-26
+3. 实现分页功能  2020-06-02
 
 #### 现存问题
-1. 暂无分页，后续实现
+1. ~~暂无分页，后续实现~~
 2. linux下无法获取文件创建时间
 
 #### 项目依赖
@@ -47,6 +49,9 @@ go get github.com/pelletier/go-toml
 
 ```shell script
 go build -o goblog main.go
+
+#mac下编译linux执行文件
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o goblog main.go
 ```
 运行项目
 ```shell script

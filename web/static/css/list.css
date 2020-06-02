@@ -1,5 +1,6 @@
 .article-list{
     /*padding: 25px 0;*/
+    margin-bottom: 1.5rem;
 }
 
 .article-list > ul{
@@ -96,6 +97,22 @@
 
 .page-list{
     text-align: center;
+    background-color: #ffffff;
+    padding: 1.8rem 3.2rem;
+}
+
+.page-list ul{
+    margin: 0;
+}
+
+.page-list .page-link{
+    border: none;
+    color: #313131;
+}
+
+.page-list .page-item.active .page-link{
+    background-color: #afafaf;
+    border-color: #afafaf;
 }
 
 @media screen and (max-width:768px){

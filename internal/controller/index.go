@@ -1,9 +1,9 @@
 package controller
 
 import (
+	"codwiki.cn/goblog/config"
 	"codwiki.cn/goblog/internal/common"
 	"codwiki.cn/goblog/internal/model"
-	"codwiki.cn/goblog/config"
 	"crypto/hmac"
 	"crypto/sha1"
 	"encoding/hex"
@@ -13,15 +13,48 @@ import (
 	"net/url"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
+	"unsafe"
 )
 
 func List(ctx iris.Context)  {
 	res := model.CateModel.ArticleList(filepath.Join(common.GetDocsPath(), ctx.Params().Get("path")))
 
+	//分页
+	page := ctx.URLParam("page")
+	var page_int int
+	page_int,err := strconv.Atoi(page)
+
+	if page == "" || err != nil {
+		page_int = 1
+	}
+
+	var limit int
+	limit_64 := config.Conf.Get("app.limit").(int64)
+	limit =  *(*int)(unsafe.Pointer(&limit_64))
+
+	length := len(res)
+	begin  := (page_int - 1) * limit
+	end    := (page_int - 1) * limit + limit
+
+	if begin > (length - 1) {
+		begin = length - 1
+		end   = length - 1
+	}
+
+	if end > (length - 1) {
+		end = length
+	}
+
+	res = res[begin:end]
+
 	data,_ := json.Marshal(res)
 
 	ctx.ViewData("data",string(data))
+	ctx.ViewData("page",page_int)
+	ctx.ViewData("records",length)
+	ctx.ViewData("perPage",limit)
 
 	ctx.View("list.html")
 }
