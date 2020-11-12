@@ -14,7 +14,7 @@ var Root = root()
  */
 func new() *toml.Tree {
 
-	config, err := toml.LoadFile("./config/config.toml")
+	config, err := toml.LoadFile("../config/config.toml")
 
 	if err != nil {
 		panic(err.Error())

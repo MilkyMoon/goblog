@@ -2,7 +2,7 @@ package model
 
 import (
 	"bufio"
-	"codwiki.cn/goblog/internal/common"
+	"goblog/internal/common"
 	"errors"
 	"os"
 	"path/filepath"

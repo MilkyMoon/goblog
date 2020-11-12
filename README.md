@@ -17,11 +17,13 @@
 4. 通过文件夹实现阅读器的目录结构
 5. ~~通过github的Webhooks实现自动更新~~
 6. 图床工具
+7. 日志记录
 
 #### 更新日志
 1. 完成网站基本内容  2020-05-18
 2. 实现webhooks自动更新  2020-05-26
 3. 实现分页功能  2020-06-02
+4. 新增gomod依赖管理 2020-11-12
 
 #### 现存问题
 1. ~~暂无分页，后续实现~~
@@ -34,15 +36,14 @@
 #### 项目运行
 下载源码
 ```shell script
-mkdir $GOPATH/src/codwiki.com/goblog
-cd $GOPATH/src/codwiki.com/goblog
 git clone https://github.com/MilkyMoon/goblog.git
+cd goblog/cmd
+go run main.go
 ```
 下载依赖
 
 ```shell
-go get github.com/kataras/iris
-go get github.com/pelletier/go-toml
+go mod tidy
 ```
 
 编译项目

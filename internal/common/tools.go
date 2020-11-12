@@ -1,7 +1,7 @@
 package common
 
 import (
-	"codwiki.cn/goblog/config"
+	"goblog/config"
 	"path/filepath"
 )
 

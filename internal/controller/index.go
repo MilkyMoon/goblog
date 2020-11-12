@@ -1,9 +1,9 @@
 package controller
 
 import (
-	"codwiki.cn/goblog/config"
-	"codwiki.cn/goblog/internal/common"
-	"codwiki.cn/goblog/internal/model"
+	"goblog/config"
+	"goblog/internal/common"
+	"goblog/internal/model"
 	"crypto/hmac"
 	"crypto/sha1"
 	"encoding/hex"

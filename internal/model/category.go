@@ -1,7 +1,7 @@
 package model
 
 import (
-	"codwiki.cn/goblog/internal/common"
+	"goblog/internal/common"
 	"os"
 	"path/filepath"
 )
