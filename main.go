@@ -1,8 +1,8 @@
 package main
 
 import (
-	"codwiki.cn/Irisgo/config"
-	"codwiki.cn/goblog/routes"
+	"goblog/config"
+	"goblog/routes"
 	"github.com/kataras/iris"
 )
 

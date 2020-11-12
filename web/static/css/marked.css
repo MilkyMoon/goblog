@@ -8,6 +8,12 @@
     margin-top: 32px;
 }
 
+.view-marked blockquote{
+    border-left: 4px solid #d8d8d8;
+    padding-left: 1rem;
+    color: #a9a9a9;
+}
+
 .view-marked-nav{
     position: relative;
 }
