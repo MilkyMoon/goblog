@@ -1,14 +1,14 @@
 package controller
 
 import (
-	"goblog/config"
-	"goblog/internal/common"
-	"goblog/internal/model"
 	"crypto/hmac"
 	"crypto/sha1"
 	"encoding/hex"
 	"encoding/json"
 	"github.com/kataras/iris"
+	"goblog/config"
+	"goblog/internal/common"
+	"goblog/internal/model"
 	"io/ioutil"
 	"net/url"
 	"os/exec"
@@ -31,7 +31,7 @@ func List(ctx iris.Context)  {
 	}
 
 	var limit int
-	limit_64 := config.Conf.Get("app.limit").(int64)
+	limit_64 := config.Int("app.limit")
 	limit =  *(*int)(unsafe.Pointer(&limit_64))
 
 	length := len(res)
@@ -117,7 +117,7 @@ func checkSecret(singn string, body []byte) bool {
 	}
 
 	// 获取github配置的加密串
-	secret := []byte(config.Conf.Get("app.secret").(string))
+	secret := []byte(config.String("app.secret"))
 
 	// 计算签名
 	mac := hmac.New(sha1.New, secret)

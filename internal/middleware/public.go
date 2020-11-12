@@ -1,16 +1,16 @@
 package middleware
 
 import (
-	"goblog/config"
-	"goblog/internal/model"
 	"encoding/json"
 	"github.com/kataras/iris"
+	"goblog/config"
+	"goblog/internal/model"
 )
 
 func SiteInfo(ctx iris.Context){
-	ctx.ViewData("title",config.Conf.Get("app.name").(string))
-	ctx.ViewData("slogan",config.Conf.Get("app.slogan").(string))
-	ctx.ViewData("icp",config.Conf.Get("app.icp").(string))
+	ctx.ViewData("title", config.String("app.name"))
+	ctx.ViewData("slogan", config.String("app.slogan"))
+	ctx.ViewData("icp", config.String("app.icp"))
 	ctx.Next()
 }
 

@@ -1,8 +1,8 @@
 package model
 
 import (
-	"goblog/internal/common"
 	"encoding/json"
+	"goblog/internal/common"
 	"io/ioutil"
 	"os"
 	"path/filepath"

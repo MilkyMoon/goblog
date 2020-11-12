@@ -42,7 +42,7 @@ func (list *ImageHost)ImageList() []Image {
 
 		image := Image{}
 		//只获取web文件夹之后的路径
-		root := filepath.Join(config.Root,"web")
+		root := filepath.Join(config.GetRootPath(),"web")
 		image.Url = path[len(root):]
 		image.CreateTime = info.ModTime()
 
@@ -85,7 +85,7 @@ func (image *ImageHost)ImageUpload(ctx iris.Context) (string,error) {
 		return "",errors.New("保存图片失败！")
 	}
 
-	return "/" + config.Conf.Get("image_host.img_dir").(string) + "/" + fname,nil
+	return "/" + config.String("image_host.img_dir") + "/" + fname,nil
 }
 
 //实现了sort接口

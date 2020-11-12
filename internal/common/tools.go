@@ -6,22 +6,22 @@ import (
 )
 
 func GetRootPath() string {
-	return filepath.Join(config.Root,config.Conf.Get("res.root_dir").(string))
+	return filepath.Join(config.GetRootPath(), config.String("res.root_dir"))
 }
 
 //获取文章文件夹根目录
 func GetDocsPath() string {
-	return filepath.Join(config.Root,config.Conf.Get("res.docs_dir").(string))
+	return filepath.Join(config.GetRootPath(), config.String("res.docs_dir"))
 }
 
 //获取文档文件夹根目录
 func GetBookPath() string  {
-	return filepath.Join(config.Root,config.Conf.Get("res.books_dir").(string))
+	return filepath.Join(config.GetRootPath(), config.String("res.books_dir"))
 }
 
 //获取图片文件夹根目录
 func GetImagePath() string {
-	return filepath.Join(config.Root,"web",config.Conf.Get("image_host.img_dir").(string))
+	return filepath.Join(config.GetRootPath(),"web", config.String("image_host.img_dir"))
 }
 
 //为了兼容windows对大小写不敏感，所以使用36进制
