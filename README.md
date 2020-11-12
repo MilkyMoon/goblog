@@ -30,6 +30,7 @@
 #### 项目依赖
 - [github.com/kataras/iris](https://github.com/kataras/iris) Web框架
 - [github.com/pelletier/go-toml](https://github.com/pelletier/go-toml) toml配置文件读取
+- [github.com/google/uuid](https://github.com/google/uuid) 生成全局唯一id
 
 #### 项目运行
 下载源码
