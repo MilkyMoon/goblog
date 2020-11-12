@@ -1,0 +1,21 @@
+INODE=`ls -i $1 |awk '{print $1}'`
+FILENAME=$1
+
+#如果传入参数带/，则获取这个传入参数的目录路径并进入目录
+ `echo $FILENAME |grep / 1> /dev/null`  &&  { FPWD=${FILENAME%/*};FPWD=${FPWD:=/};cd ${FPWD};FPWD=`pwd`; }  || FPWD=`pwd`
+
+array=(`echo ${FPWD} | sed 's@/@ @g'`)
+array_length=${#array[@]}
+
+for ((i=${array_length};i>=0;i--))
+do
+  unset array[$i]
+  SUBPWD=`echo " "${array[@]} | sed 's@ @/@g'`
+  DISK=`df -h |grep ${SUBPWD}$ |awk '{print $1}'`
+  [[ -n $DISK ]] && break
+done
+
+
+#[[ "`mount |grep ${DISK} |awk '{print $5}'`" != "ext4" ]] && { echo ${DISK} is not mount on type ext4! Only ext4 file system support!;exit 2; }
+
+debugfs -R "stat <${INODE}>" ${DISK}

@@ -20,3 +20,12 @@
     docs_dir = "resources/docs"
     #文档目录
     books_dir = "resources/books"
+[image_host]
+    #用户名
+    username = "admin"
+    #密码
+    password = "admin"
+    #访问路由
+    path = "/imghost"
+    #图片目录
+    img_dir = "static/uploads/image"

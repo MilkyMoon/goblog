@@ -2,13 +2,32 @@
   {
     "title": "首页",
     "path": "/",
+    "folder": "",
     "description": "博客首页"
   },
   {
-    "title": "其他",
-    "path": "/docs/其他",
-    "folder": "其他",
-    "description": ""
+    "title": "PHP",
+    "path": "/docs/PHP",
+    "folder": "PHP",
+    "description": "PHP应用"
+  },
+  {
+    "title": "Golang",
+    "path": "/docs/Golang",
+    "folder": "Golang",
+    "description": "Go应用"
+  },
+  {
+    "title": "JS/CSS",
+    "path": "/docs/JS&CSS",
+    "folder": "JS&CSS",
+    "description": "前端"
+  },
+  {
+    "title": "随笔",
+    "path": "/docs/随笔",
+    "folder": "随笔",
+    "description": "随笔"
   },
   {
     "title": "GitHub",

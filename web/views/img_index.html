@@ -1,0 +1,150 @@
+<div class="img-upload">
+    <b-navbar type="dark" variant="dark">
+        <b-container>
+            <b-navbar-nav>
+                <b-nav-item href="/">首页</b-nav-item>
+            </b-navbar-nav>
+        </b-container>
+    </b-navbar>
+
+    <b-container class="p-4">
+        <div class="img-upload-drag">
+            <input type="file" accept="image/*" multiple @change="uploadImg" ref="img"/>
+            <i class="fa fa-file-image-o"></i>
+            <div class="img-upload-drag-container">
+                <p>点击或将图片拖拽到此处</p>
+                <p>可支持多张图片同时上传</p>
+            </div>
+        </div>
+    </b-container>
+
+    <div class="bg-dark">
+        <b-container class="p-4">
+            <b-row>
+                <b-col md="3" v-for="item in files" class="">
+                    <div>
+                        <b-progress :value="item.uploadPercentage" max="100" variant="success" striped="true" show-progress animated></b-progress>
+                    </div>
+
+                    <img :src="item.url"/>
+                </b-col>
+                <b-col md="3" v-for="item in list" class="">
+                    <img :src="item.url"/>
+                </b-col>
+            </b-row>
+        </b-container>
+    </div>
+
+</div>
+
+<script>
+    var app = new Vue({
+        el: "#vue",
+        data: {
+            files: [],
+            list:[],
+            path:""
+        },
+        created(){
+            this.path = '{%.path%}'
+            this.getList()
+        },
+        methods: {
+            getList(){
+                let _this = this
+
+                fly.get(this.path + "/list").then(res=>{
+                    if (res.code == 200) {
+                        _this.list = res.data
+                    } else {
+                        _this.$bvToast.toast(res.message, {
+                            title: '发生了错误！',
+                            variant: 'danger',
+                            solid: true
+                        })
+                    }
+                })
+            },
+            uploadImg(e){
+                let imgfile = this.$refs.img
+                for (var i = 0; i !== imgfile.files.length; i++) {
+                    this.files.push({
+                        src: '',
+                        name: imgfile.files[i].name,
+                        uploadPercentage: 0,
+                        showPercentage: true
+                    });
+
+                    this.uploadFile(imgfile.files[i],this.files.length - 1)
+                }
+            },
+            uploadFile: function(file, index) {
+                return new Promise((resolve, reject) => {
+                    let reader = new FileReader();
+                    let _this = this;
+                    reader.readAsDataURL(file);
+                    reader.onload = function() {
+                        _this.files[index].url = this.result
+                        let fd = new FormData();
+                        fd.append("file", file);
+
+                        let xhr = new XMLHttpRequest();
+                        xhr.open("POST", '/imghost/upload', true);
+                        xhr.upload.addEventListener(
+                            "progress",
+                            function(e) {
+                                if (e.loaded == e.total) {
+                                    _this.files[index].uploadPercentage = Math.round(
+                                        (e.loaded * 100) / e.total
+                                    );
+                                    setTimeout(() => {
+                                        _this.files[index].showPercentage = false;
+                                    }, 1000);
+                                } else {
+                                    _this.files[index].uploadPercentage = Math.round(
+                                        (e.loaded * 100) / e.total
+                                    );
+                                }
+                            },
+                            false
+                        );
+                        xhr.onload = function() {
+                            //   alert("上传完成！");
+                            console.log("上传完成")
+                        };
+                        xhr.send(fd);
+                    };
+                });
+            },
+            onDrag: function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+            },
+            onDragLeave: function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+            },
+            onDrop: function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                var dt = e.dataTransfer;
+                for (var i = 0; i !== dt.files.length; i++) {
+                    this.files.push({
+                        src: '',
+                        name: dt.files[i].name,
+                        uploadPercentage: 0,
+                        showPercentage: true
+                    });
+
+                    this.uploadFile(dt.files[i],this.files.length - 1)
+                }
+            }
+        },
+        mounted(){
+            let dropbox = document.querySelector('.img-upload-drag');
+            dropbox.addEventListener('dragenter', this.onDrag, false);
+            dropbox.addEventListener('dragover', this.onDrag, false);
+            dropbox.addEventListener('drop', this.onDrop, false);
+        }
+    });
+</script>

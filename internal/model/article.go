@@ -2,7 +2,7 @@ package model
 
 import (
 	"bufio"
-	"codwiki.cn/goblog/internal/common"
+	"goblog/internal/common"
 	"errors"
 	"os"
 	"path/filepath"
@@ -128,7 +128,7 @@ func GetArticleContent(path string) (Article,error) {
 		}
 
 		//截取文章内容
-		body := strings.Split(content,"<br description/>")
+		body := strings.Split(content,"<br desc/>")
 
 		//判断文章内容的结构
 		if len(body) != 3 && len(body) != 1 {
@@ -175,28 +175,12 @@ func GetArticleContent(path string) (Article,error) {
 		//判断文件所在目录
 		//var path_arr []string
 		if(strings.Contains(path,common.GetDocsPath())){
-			//path_arr = strings.Split(string([]byte(path)[len(common.GetDocsPath()) + 1:len(path) - 3]),"/")
 			article.Path = string([]byte(path)[len(common.GetDocsPath()):len(path) - 3])
 			article.Type = 1
 		} else {
-			//path_arr = strings.Split(string([]byte(path)[len(common.GetBookPath()) + 1:len(path) - 3]),"/")
 			article.Path = string([]byte(path)[len(common.GetBookPath()):len(path) - 3])
 			article.Type = 2
 		}
-
-		//path_str := ""
-		//for _,v := range path_arr {
-		//	//逐个字转换
-		//	for _,word := range []rune(v) {
-		//		fmt.Println(string(word))
-		//	}
-		//	path_str += "/"
-		//	ascii := strconv.QuoteToASCII(v)
-		//	ascii = strings.Replace(ascii,"\\","",-1)
-		//	path_str += ascii[1:len(ascii) - 2]
-		//}
-
-		//article.Path = path_str
 	} else {
 		return article,err
 	}

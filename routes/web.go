@@ -1,8 +1,9 @@
 package routes
 
 import (
-	"codwiki.cn/goblog/internal/controller"
-	"codwiki.cn/goblog/internal/middleware"
+	"goblog/config"
+	"goblog/internal/controller"
+	"goblog/internal/middleware"
 	"github.com/iris-contrib/middleware/cors"
 	"github.com/kataras/iris"
 )
@@ -37,12 +38,20 @@ func Register(api *iris.Application)  {
 	docs.Get("/{path}",controller.List)
 	docs.Get("/{path}/{name}",controller.Post)
 
+	//图床路由组
+	img := app.Party(config.Conf.Get("image_host.path").(string))
+	img.Get("/login",controller.ImgLoginView)
+	img.Post("/login",controller.ImgLogin)
+	img.Get("/index",controller.ImgIndex)
+	img.Get("/list",controller.ImgList)
+	img.Post("/upload",controller.ImgUpload)
+
 	//跳转错误页面
 	app.Get("/errors",notFound)
-
 	app.Post("/webhooks",controller.Webhook)
-
 	app.Get("/reload",controller.Reload)
+
+
 
 	//book := app.Party("/book")
 	//book.Get("/")

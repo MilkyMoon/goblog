@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"codwiki.cn/goblog/config"
-	"codwiki.cn/goblog/internal/model"
+	"goblog/config"
+	"goblog/internal/model"
 	"encoding/json"
 	"github.com/kataras/iris"
 )

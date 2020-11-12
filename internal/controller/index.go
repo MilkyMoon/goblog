@@ -1,9 +1,9 @@
 package controller
 
 import (
-	"codwiki.cn/goblog/config"
-	"codwiki.cn/goblog/internal/common"
-	"codwiki.cn/goblog/internal/model"
+	"goblog/config"
+	"goblog/internal/common"
+	"goblog/internal/model"
 	"crypto/hmac"
 	"crypto/sha1"
 	"encoding/hex"
@@ -35,19 +35,22 @@ func List(ctx iris.Context)  {
 	limit =  *(*int)(unsafe.Pointer(&limit_64))
 
 	length := len(res)
-	begin  := (page_int - 1) * limit
-	end    := (page_int - 1) * limit + limit
 
-	if begin > (length - 1) {
-		begin = length - 1
-		end   = length - 1
+	if length > limit {
+		begin  := (page_int - 1) * limit
+		end    := (page_int - 1) * limit + limit
+
+		if begin > (length - 1) {
+			begin = length - 1
+			end   = length - 1
+		}
+
+		if end > (length - 1) {
+			end = length
+		}
+
+		res = res[begin:end]
 	}
-
-	if end > (length - 1) {
-		end = length
-	}
-
-	res = res[begin:end]
 
 	data,_ := json.Marshal(res)
 
@@ -107,7 +110,7 @@ func gitpull() {
 	}
 }
 
-//参考mdblog
+//验证签名
 func checkSecret(singn string, body []byte) bool {
 	if len(singn) != 45 || !strings.HasPrefix(singn, "sha1=") {
 		return false

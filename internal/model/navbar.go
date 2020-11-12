@@ -1,7 +1,7 @@
 package model
 
 import (
-	"codwiki.cn/goblog/internal/common"
+	"goblog/internal/common"
 	"encoding/json"
 	"io/ioutil"
 	"os"
