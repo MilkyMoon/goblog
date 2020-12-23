@@ -1,0 +1,39 @@
+{% block "navbar" . %}{% end %}
+
+<b-container class="content-container">
+    <b-row>
+        <b-col md="12">
+            <div class="blog-book-list">
+                <ul>
+                    <li>
+
+                    </li>
+                </ul>
+            </div>
+        </b-col>
+    </b-row>
+</b-container>
+
+{% block "footer" . %}{% end %}
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: "#vue",
+        data:{
+            //接收值 |raw 不转义输出
+            data: [],
+            menu: []
+        },
+        created(){
+            this.data = JSON.parse('{%.data%}')
+            this.menu = JSON.parse('{%.menu%}')
+
+            hljs.initHighlightingOnLoad()
+        },
+        methods:{
+            marked(desc){
+                return marked(desc)
+            }
+        }
+    });
+</script>

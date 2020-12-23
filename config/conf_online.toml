@@ -1,0 +1,31 @@
+[app]
+  #app 名称
+  name = "彭棕的个人博客"
+  slogan = "没有什么比做无用功更让人痛苦的事情了！"
+  #app url
+  url  = "https://codwiki.cn"
+  port = 8181
+  #单元测试调试信息
+  debug = false
+  #网站备案号
+  icp = "京ICP备15054073号"
+  #github Webhooks中配置的 Secret
+  secret = "goblog"
+  #每页最多显示文章数
+  limit = 10
+#资源文件配置
+[res]
+    root_dir = "/home/works/blog-docs"
+    #文章目录
+    docs_dir = "/home/works/blog-docs/docs"
+    #文档目录
+    books_dir = "/home/works/blog-docs/books"
+[image_host]
+    #用户名
+    username = "admin"
+    #密码
+    password = "admin"
+    #访问路由
+    path = "/imghost"
+    #图片目录
+    img_dir = "static/uploads/image"

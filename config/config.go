@@ -1,49 +1,65 @@
 package config
 
 import (
+	"flag"
+	"fmt"
 	"github.com/pelletier/go-toml"
 	"os"
+	"path/filepath"
 )
 
-var Conf = new()
+var (
+	FlagPort     int //提供服务端口号
+	FlagConfName string
+	rootPath     string
+	configFile   string
+	debug        = true
+	conf         *toml.Tree
+)
 
-var Root = root()
-/**
- * 返回单例实例
- * @method New
- */
-func new() *toml.Tree {
+func init() {
+	FlagParse()
 
-	config, err := toml.LoadFile("./config/config.toml")
-
-	if err != nil {
-		panic(err.Error())
+	env := "online"
+	if FlagConfName != "" {
+		env = FlagConfName
 	}
 
-	return config
+	dir, _ := os.Getwd()
+	rootPath = filepath.Join(dir,"..")
+	configFile = fmt.Sprintf("%s/config/conf_%s.toml", rootPath, env)
+
+	fmt.Println(configFile)
+	_, err := os.Stat(configFile)
+	if err != nil && os.IsNotExist(err) {
+		panic(fmt.Sprintf("config file (%s) not exist", configFile))
+	}
+	config, err := toml.LoadFile(configFile)
+	if err != nil {
+		panic(fmt.Sprintf("load conf file(%s) error(%+v)", configFile, err))
+	}
+	fmt.Println("load config " + configFile)
+	conf = config
 }
 
-//获取当前所执行文件的根目录
-func root() string {
-	//file, _ := exec.LookPath(os.Args[0])
-	//
-	//path, _ := filepath.Abs(file)
-	//
-	//i := strings.LastIndex(path, "/")
-	//if i < 0 {
-	//	i = strings.LastIndex(path, "\\")
-	//}
+//FlagParse 解析命令行参数
+func FlagParse() {
+	if !flag.Parsed() {
+		flag.IntVar(&FlagPort, "port", 0, "the server port")
+		flag.StringVar(&FlagConfName, "conf", "", "the server load conf")
 
-	path,_ := os.Getwd()
+		flag.Parse()
+	}
+}
 
-	// 获取文件的绝对路径
-	//path, _ := filepath.Abs(file)
+func GetRootPath() string {
+	return rootPath
+}
 
-	// 获取最后一个文件名所在的位置，如 /home/bro/blog ，
-	// 这里可以获取到 blog 的 b 所在的位置，为了下面的 slice 截取字符串
-	//index := strings.LastIndex(path, string(os.PathSeparator))
+func String(key string) string {
+	return conf.Get(key).(string)
+}
 
-	//fmt.Println(path,index)
-
-	return string(path)
+func Int(key string) int {
+	return int(conf.Get(key).(int64))
 }

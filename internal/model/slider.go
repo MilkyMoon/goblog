@@ -1,7 +1,7 @@
 package model
 
 import (
-	"codwiki.cn/goblog/internal/common"
+	"goblog/internal/common"
 	"encoding/json"
 	"io/ioutil"
 	"os"
@@ -25,7 +25,7 @@ type Slider struct {
 }
 
 func GetSliderInfo() Slider {
-	f,err := os.Open(filepath.Join(common.GetRootPath(),"app.json"))
+	f,err := os.Open(filepath.Join(common.GetResRootPath(),"app.json"))
 
 	if err != nil{
 		return Slider{}

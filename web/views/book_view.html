@@ -1,0 +1,16 @@
+<div>
+    <div class="book-view">
+        <div class="book-summary" :style="{'left':summary_left}">
+            <router-link to="/">PengZong's Blog</router-link>
+            <new-tree :children="tree_data" :active="active_id" v-on:refresh="myfresh"></new-tree>
+        </div>
+        <div class="book-body" :style="{'left':body_left}">
+            <div class="book-body-header">
+                <font-awesome-icon icon="align-justify" class="book-body-icon" @click="summary()"></font-awesome-icon>
+                {{date}}
+                <h4>{{title}}</h4>
+            </div>
+            <div v-highlight v-html="content" class="view-marked"></div>
+        </div>
+    </div>
+</div>

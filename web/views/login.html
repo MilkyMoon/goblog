@@ -1,0 +1,75 @@
+<div class="blog-login">
+    <b-row>
+        <b-col md="4">
+            <div class="blog-login-from">
+                <h3>图床管理</h3>
+                <b-form @submit="onSubmit" >
+                    <b-form-input
+                            id="input-live"
+                            v-model="form.username"
+                            :state="nameState"
+                            required
+                            aria-describedby="账号"
+                            placeholder="请填写账号"
+                            trim
+                    ></b-form-input>
+                    <b-form-input
+                            id="input-live"
+                            type="password"
+                            v-model="form.password"
+                            :state="passState"
+                            required
+                            aria-describedby="密码"
+                            placeholder="请填写密码"
+                            trim
+                    ></b-form-input>
+
+                    <b-button block type="submit" variant="success" variant="primary">登录</b-button>
+                </b-form>
+            </div>
+        </b-col>
+    </b-row>
+</div>
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: "#vue",
+        data:{
+            form:{
+                username:"",
+                password:""
+            },
+            path:""
+        },
+        created(){
+            this.path = '{%.path%}'
+        },
+        methods:{
+            onSubmit(evt) {
+                evt.preventDefault()
+
+                let _this = this
+
+                fly.post(this.path,this.form).then(res=>{
+                    if (res.code == 200) {
+                        location.href = res.data
+                    } else {
+                        _this.$bvToast.toast(res.message, {
+                            title: '发生了错误！',
+                            variant: 'danger',
+                            solid: true
+                        })
+                    }
+                })
+            }
+        },
+        computed: {
+            nameState() {
+                return this.form.username.length > 0 ? true : false
+            },
+            passState(){
+                return this.form.password.length > 0 ? true : false
+            }
+        }
+    });
+</script>

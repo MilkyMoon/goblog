@@ -8,6 +8,7 @@
 body {
     position: relative;
     margin: 0;
+    line-height: 2;
     background-color: #EDEDED;
     min-height: -webkit-fill-available;
     -webkit-font-smoothing: antialiased; /*抗锯齿*/
@@ -190,4 +191,8 @@ a:hover{
 
 .blog-slider-block li a:hover{
     text-decoration: #333 !important;
+}
+
+body .b-toaster{
+    z-index: 1100;
 }

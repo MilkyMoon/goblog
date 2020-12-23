@@ -1,14 +1,14 @@
 package controller
 
 import (
-	"codwiki.cn/goblog/config"
-	"codwiki.cn/goblog/internal/common"
-	"codwiki.cn/goblog/internal/model"
 	"crypto/hmac"
 	"crypto/sha1"
 	"encoding/hex"
 	"encoding/json"
 	"github.com/kataras/iris"
+	"goblog/config"
+	"goblog/internal/common"
+	"goblog/internal/model"
 	"io/ioutil"
 	"net/url"
 	"os/exec"
@@ -18,61 +18,64 @@ import (
 	"unsafe"
 )
 
-func List(ctx iris.Context)  {
+func List(ctx iris.Context) {
 	res := model.CateModel.ArticleList(filepath.Join(common.GetDocsPath(), ctx.Params().Get("path")))
 
 	//分页
 	page := ctx.URLParam("page")
 	var page_int int
-	page_int,err := strconv.Atoi(page)
+	page_int, err := strconv.Atoi(page)
 
 	if page == "" || err != nil {
 		page_int = 1
 	}
 
 	var limit int
-	limit_64 := config.Conf.Get("app.limit").(int64)
-	limit =  *(*int)(unsafe.Pointer(&limit_64))
+	limit_64 := config.Int("app.limit")
+	limit = *(*int)(unsafe.Pointer(&limit_64))
 
 	length := len(res)
-	begin  := (page_int - 1) * limit
-	end    := (page_int - 1) * limit + limit
 
-	if begin > (length - 1) {
-		begin = length - 1
-		end   = length - 1
+	if length > limit {
+		begin := (page_int - 1) * limit
+		end := (page_int-1)*limit + limit
+
+		if begin > (length - 1) {
+			begin = length - 1
+			end = length - 1
+		}
+
+		if end > (length - 1) {
+			end = length
+		}
+
+		res = res[begin:end]
 	}
 
-	if end > (length - 1) {
-		end = length
-	}
+	data, _ := json.Marshal(res)
 
-	res = res[begin:end]
-
-	data,_ := json.Marshal(res)
-
-	ctx.ViewData("data",string(data))
-	ctx.ViewData("page",page_int)
-	ctx.ViewData("records",length)
-	ctx.ViewData("perPage",limit)
+	ctx.ViewData("data", string(data))
+	ctx.ViewData("page", page_int)
+	ctx.ViewData("records", length)
+	ctx.ViewData("perPage", limit)
 
 	ctx.View("list.html")
 }
 
-func Post(ctx iris.Context)  {
-	dir,_ := url.QueryUnescape(ctx.Params().Get("path"))
-	name,_ := url.QueryUnescape(ctx.Params().Get("name"))
-	path := filepath.Join(common.GetDocsPath(), dir,name)
+func Post(ctx iris.Context) {
+	dir, _ := url.QueryUnescape(ctx.Params().Get("path"))
+	name, _ := url.QueryUnescape(ctx.Params().Get("name"))
+	path := filepath.Join(common.GetDocsPath(), dir, name)
 	res := model.CateModel.ArticleContent(path + ".md")
 
-	data,_ := json.Marshal(res)
+	data, _ := json.Marshal(res)
 
-	ctx.ViewData("data",string(data))
+	ctx.ViewData("data", string(data))
 
 	ctx.View("marked_view.html")
 }
 
-func Webhook(ctx iris.Context){
+func Webhook(ctx iris.Context) {
 	singn := ctx.GetHeader("X-Hub-Signature")
 	body, err := ioutil.ReadAll(ctx.Request().Body)
 
@@ -93,7 +96,7 @@ func Webhook(ctx iris.Context){
 }
 
 func gitpull() {
-	path := common.GetRootPath()
+	path := common.GetResRootPath()
 	// 执行 git pull
 	cmd := exec.Command("git", "pull")
 	// 切换到命令要执行的目录
@@ -107,14 +110,14 @@ func gitpull() {
 	}
 }
 
-//参考mdblog
+//验证签名
 func checkSecret(singn string, body []byte) bool {
 	if len(singn) != 45 || !strings.HasPrefix(singn, "sha1=") {
 		return false
 	}
 
 	// 获取github配置的加密串
-	secret := []byte(config.Conf.Get("app.secret").(string))
+	secret := []byte(config.String("app.secret"))
 
 	// 计算签名
 	mac := hmac.New(sha1.New, secret)
@@ -133,7 +136,7 @@ func checkSecret(singn string, body []byte) bool {
 	return false
 }
 
-func Reload(ctx iris.Context)  {
+func Reload(ctx iris.Context) {
 	model.CateModel.Reload()
 	ctx.StatusCode(200)
 }
