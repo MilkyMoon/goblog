@@ -21,7 +21,6 @@ func main()  {
 
 	app := iris.New()
 	routes.Register(app)
-	app.StaticWeb("/static", "../web/static")
 
 	_ = app.Run(iris.Addr(addr),iris.WithoutServerError())
 }

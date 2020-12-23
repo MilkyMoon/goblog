@@ -25,7 +25,7 @@ type Slider struct {
 }
 
 func GetSliderInfo() Slider {
-	f,err := os.Open(filepath.Join(common.GetRootPath(),"app.json"))
+	f,err := os.Open(filepath.Join(common.GetResRootPath(),"app.json"))
 
 	if err != nil{
 		return Slider{}

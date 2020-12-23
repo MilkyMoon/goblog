@@ -22,6 +22,7 @@ func Register(api *iris.Application)  {
 	HTML.Delims("{%","%}")
 	HTML.Layout("layout.html")
 	api.RegisterView(HTML)
+	api.StaticWeb("/static", "../web/static")
 
 	//注册全局中间件，捕获异常
 	api.Use(middleware.Recover)

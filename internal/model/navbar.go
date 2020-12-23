@@ -19,7 +19,7 @@ type Navbar struct {
 }
 
 func GetNavList() Navbars {
-	f,err := os.Open(filepath.Join(common.GetRootPath(),"navbar.json"))
+	f,err := os.Open(filepath.Join(common.GetResRootPath(),"navbar.json"))
 
 	if err != nil{
 		return nil

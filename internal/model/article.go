@@ -2,8 +2,8 @@ package model
 
 import (
 	"bufio"
-	"goblog/internal/common"
 	"errors"
+	"goblog/internal/common"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -41,7 +41,7 @@ func GetArticleList(name string) []Article {
 		//判断是否是markdown文档
 		if filepath.Ext(path) == ".md" {
 			//获取文档信息
-			article,err := GetArticleContent(path)
+			article, err := GetArticleContent(path)
 
 			if err != nil {
 				return nil
@@ -53,13 +53,13 @@ func GetArticleList(name string) []Article {
 			//article.Title = strings.TrimSuffix(filepath.Base(path),suffix)
 			article.Body = ""
 
-			list = append(list,article)
+			list = append(list, article)
 		}
 
 		return nil
 	})
 
-	if err != nil{
+	if err != nil {
 		panic(err)
 	}
 
@@ -68,12 +68,12 @@ func GetArticleList(name string) []Article {
 
 /**
 获取文章详情
- */
-func GetArticleContent(path string) (Article,error) {
+*/
+func GetArticleContent(path string) (Article, error) {
 	article := Article{}
 
 	//以只读方式打开文档
-	if fileObj,err := os.Open(path);err == nil {
+	if fileObj, err := os.Open(path); err == nil {
 		defer fileObj.Close()
 
 		//判断文章是否存在标题
@@ -88,7 +88,7 @@ func GetArticleContent(path string) (Article,error) {
 			line, err := buf.ReadString('\n')
 
 			//找到不为空的第一行文字
-			if line != "" && !is_begin{
+			if line != "" && !is_begin {
 				is_begin = true
 
 				//判断是否为一二三级标题
@@ -96,9 +96,9 @@ func GetArticleContent(path string) (Article,error) {
 				str := strings.TrimSpace(line)
 				reg := "^(#{1,3})\\s+(.*)"
 
-				ok,err :=regexp.MatchString(reg,str)
+				ok, err := regexp.MatchString(reg, str)
 
-				if err != nil || !ok{
+				if err != nil || !ok {
 					//不为标题时加入文章详情
 					content += line
 					continue
@@ -124,15 +124,15 @@ func GetArticleContent(path string) (Article,error) {
 			//获取文件后缀
 			suffix := filepath.Ext(path)
 			//获取文件名
-			article.Title = strings.TrimSuffix(filepath.Base(path),suffix)
+			article.Title = strings.TrimSuffix(filepath.Base(path), suffix)
 		}
 
 		//截取文章内容
-		body := strings.Split(content,"<br desc/>")
+		body := strings.Split(content, "<br desc/>")
 
 		//判断文章内容的结构
 		if len(body) != 3 && len(body) != 1 {
-			return Article{},errors.New("文章内容结构不正确")
+			return Article{}, errors.New("文章内容结构不正确")
 		}
 
 		//截取文章描述
@@ -144,7 +144,7 @@ func GetArticleContent(path string) (Article,error) {
 		}
 
 		//获取文件最后更新时间
-		fi,err := fileObj.Stat()
+		fi, err := fileObj.Stat()
 		if err != nil {
 			article.UpdateTime = time.Now()
 		} else {
@@ -168,24 +168,24 @@ func GetArticleContent(path string) (Article,error) {
 		article.CreateTime = time.Unix(int64(ctim.Sec), int64(ctim.Nsec))
 
 		//获取Tag标签（父文件夹）
-		dirs := strings.Split(path,"/")
-		article.Category = dirs[len(dirs) - 2]
+		dirs := strings.Split(path, "/")
+		article.Category = dirs[len(dirs)-2]
 
 		//构建文件访问路径
 		//判断文件所在目录
 		//var path_arr []string
-		if(strings.Contains(path,common.GetDocsPath())){
-			article.Path = string([]byte(path)[len(common.GetDocsPath()):len(path) - 3])
+		if strings.Contains(path, common.GetDocsPath()) {
+			article.Path = string([]byte(path)[len(common.GetDocsPath()) : len(path)-3])
 			article.Type = 1
 		} else {
-			article.Path = string([]byte(path)[len(common.GetBookPath()):len(path) - 3])
+			article.Path = string([]byte(path)[len(common.GetBookPath()) : len(path)-3])
 			article.Type = 2
 		}
 	} else {
-		return article,err
+		return article, err
 	}
 
-	return article,nil
+	return article, nil
 }
 
 //实现了sort接口

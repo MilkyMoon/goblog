@@ -6,17 +6,22 @@ import (
 )
 
 func GetRootPath() string {
-	return filepath.Join(config.GetRootPath(), config.String("res.root_dir"))
+	return config.GetRootPath()
+}
+
+//获取内容根目录
+func GetResRootPath() string {
+	return  config.String("res.root_dir")
 }
 
 //获取文章文件夹根目录
 func GetDocsPath() string {
-	return filepath.Join(config.GetRootPath(), config.String("res.docs_dir"))
+	return config.String("res.docs_dir")
 }
 
 //获取文档文件夹根目录
 func GetBookPath() string  {
-	return filepath.Join(config.GetRootPath(), config.String("res.books_dir"))
+	return config.String("res.books_dir")
 }
 
 //获取图片文件夹根目录

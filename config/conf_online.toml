@@ -15,11 +15,11 @@
   limit = 10
 #资源文件配置
 [res]
-    root_dir = "/resources"
+    root_dir = "/home/works/blog-docs"
     #文章目录
-    docs_dir = "/resources/docs"
+    docs_dir = "/home/works/blog-docs/docs"
     #文档目录
-    books_dir = "/resources/books"
+    books_dir = "/home/works/blog-docs/books"
 [image_host]
     #用户名
     username = "admin"
