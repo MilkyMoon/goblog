@@ -154,16 +154,16 @@ func GetArticleContent(path string) (Article, error) {
 		//获取创建时间
 
 		//linux下获取创建时间（此方法无法获取到创建时间，后续更新shell脚本解决方案）
-		//stat_t := fi.Sys().(*syscall.Stat_t)
-		//ctim := stat_t.Ctim
+		stat_t := fi.Sys().(*syscall.Stat_t)
+		ctim := stat_t.Ctim
 
 		//windows下获取创建时间
 		//wFileSys := fi.Sys().(*syscall.Win32FileAttributeData)
 		//ctim := wFileSys.CreationTime.Nanoseconds()/1e9
 
 		//mac下获取文件创建时间
-		stat_t := fi.Sys().(*syscall.Stat_t)
-		ctim := stat_t.Birthtimespec
+		//stat_t := fi.Sys().(*syscall.Stat_t)
+		//ctim := stat_t.Birthtimespec
 
 		article.CreateTime = time.Unix(int64(ctim.Sec), int64(ctim.Nsec))
 
