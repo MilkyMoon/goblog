@@ -8,7 +8,7 @@
   #单元测试调试信息
   debug = false
   #网站备案号
-  icp = "京ICP备15054073号"
+  icp = "京ICP备15054073号-2"
   #github Webhooks中配置的 Secret
   secret = "goblog"
   #每页最多显示文章数
