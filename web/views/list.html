@@ -75,7 +75,8 @@
                 chunk:10,
                 theme: 'bootstrap3',
             },
-            page_show:false
+            page_show:false,
+            path: ''
         },
         created(){
             this.data = JSON.parse('{%.data%}')
@@ -85,6 +86,7 @@
             this.page = parseInt('{%.page%}')
             this.records = parseInt('{%.records%}')
             this.perPage = parseInt('{%.perPage%}')
+            this.path = window.location.pathname
 
             if(this.records / this.perPage > 1) { this.page_show = true }
 
