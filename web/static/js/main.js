@@ -3,4 +3,3 @@
 import fly from '../util/fly.js'
 
 Vue.prototype.$http = fly
-console.log("main")

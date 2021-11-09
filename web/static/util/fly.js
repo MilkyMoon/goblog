@@ -27,7 +27,6 @@ fly.interceptors.request.use((request)=>{
 //添加响应拦截器，响应拦截器会在then/catch处理之前执行
 fly.interceptors.response.use(
     (response) => {
-        console.log(response)
         //只将请求结果的data字段返回
         return response.data
     },
