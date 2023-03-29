@@ -84,7 +84,7 @@ func (image *ImageHost) ImageUpload(ctx iris.Context) (string, error) {
 		return "", errors.New("保存图片失败！")
 	}
 
-	return filepath.Join("/", config.String("image_host.img_dir"), date, "/") + fname, nil
+	return filepath.Join("/", config.String("image_host.img_dir"), date) + "/" + fname, nil
 }
 
 //实现了sort接口
